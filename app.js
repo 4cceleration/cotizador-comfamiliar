@@ -228,19 +228,18 @@ const globalActions = {
 };
 
 /* ---------- Ingreso ---------- */
-// Pantalla de entrada local (sin servidor): no valida credenciales.
+// Pantalla de entrada local (sin servidor): solo el botón «Ingresar».
 
 const SESION = "cotizador.sesion";
 function checkLogin() {
   const ok = !!load(SESION, null);
   document.body.classList.toggle("locked", !ok);
   $("#login").hidden = ok;
-  if (!ok) $("#formLogin").reset();
   return ok;
 }
 $("#formLogin").addEventListener("submit", (e) => {
   e.preventDefault();
-  store(SESION, { email: e.target.email.value.trim(), t: Date.now() });
+  store(SESION, { t: Date.now() });
   checkLogin();
   route();
 });
