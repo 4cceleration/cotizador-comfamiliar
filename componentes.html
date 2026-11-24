@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Componentes · Cotizador</title>
+  <link rel="stylesheet" href="styles.css?v=20">
+  <style>
+    .kit section { margin-bottom: 30px; }
+    .kit h2 { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 0 0 12px; }
+    .kit .demo { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .kit .nav { position: static; }
+    .kit .fab { position: static; display: grid; }
+    .kit .stack { display: grid; gap: 12px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/logo-comfamiliar.png" alt="Comfamiliar Risaralda"><span class="brand-sep"></span><span class="brand-txt"><b>Cotizaciones</b></span></a>
+    <button class="ghost">Salir</button>
+  </header>
+  <main id="app">
+    <div class="page narrow kit">
+      <div class="page-head"><h1>Componentes</h1></div>
+
+      <section>
+        <h2>Botones</h2>
+        <div class="demo">
+          <button>Secundario</button>
+          <button class="primary">Principal</button>
+          <button class="on">Activo</button>
+          <button class="ghost">Fantasma</button>
+          <button class="danger-ghost">Eliminar</button>
+          <button class="small">Pequeño</button>
+          <button disabled>Desactivado</button>
+          <button class="icon" title="Quitar">✕</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Campos</h2>
+        <div class="grid">
+          <label>Texto<input placeholder="Escribe aquí"></label>
+          <label>Lista<select><option>Opción 1</option><option>Opción 2</option></select></label>
+          <label class="span-2">Área de texto<textarea rows="3" placeholder="Detalle"></textarea></label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Filtros</h2>
+        <div class="chips">
+          <button class="chip on">Todas 12</button>
+          <button class="chip">Pendientes 4</button>
+          <button class="chip">Completadas 8</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Check</h2>
+        <div class="demo"><span class="chk"></span><span class="chk on"></span></div>
+      </section>
+
+      <section>
+        <h2>Estados</h2>
+        <div class="demo">
+          <span class="badge st-pendiente">Pendiente</span>
+          <span class="badge st-en_proceso">En cotización</span>
+          <span class="badge st-cotizada">Cotizada</span>
+          <span class="badge st-aprobada">Aprobada</span>
+          <span class="badge st-rechazada">Rechazada</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Tarjetas de área</h2>
+        <div class="area-grid">
+          <article class="area-card"><a class="area-link" href="#"><h2>Recreación y Turismo</h2><p class="area-desc">Parque Consotá y planes</p><span class="area-go">Solicitar →</span></a><a class="area-sub" href="#">Bandeja · 3 <b>1</b></a></article>
+          <article class="area-card"><a class="area-link" href="#"><h2>Educación</h2><p class="area-desc">Colegio e idiomas</p><span class="area-go">Solicitar →</span></a><a class="area-sub" href="#">Bandeja</a></article>
+        </div>
+      </section>
+
+      <section>
+        <h2>Lista de solicitudes</h2>
+        <div class="sol-list">
+          <a class="sol-row" href="#"><span class="chk on"></span><div class="sol-main"><strong>Salón para evento</strong><span>Eventos y Convenciones · Usuario prueba · 24 nov</span></div><div class="sol-meta"><span class="badge st-aprobada">Aprobada</span></div><div class="sol-total">$ 2.380.000</div></a>
+          <a class="sol-row" href="#"><span class="chk"></span><div class="sol-main"><strong>Taller para colaboradores</strong><span>Capacitación Empresarial · Usuario prueba · 23 nov</span></div><div class="sol-meta"><span class="badge st-pendiente">Pendiente</span></div><div class="sol-total">—</div></a>
+        </div>
+      </section>
+
+      <section>
+        <h2>Pasos</h2>
+        <ol class="stepper">
+          <li class="done"><button><span class="n">✓</span><span class="l">Área</span></button></li>
+          <li class="now"><button><span class="n">2</span><span class="l">Servicios</span></button></li>
+          <li><button disabled><span class="n">3</span><span class="l">Necesidad</span></button></li>
+          <li><button disabled><span class="n">4</span><span class="l">Tus datos</span></button></li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Opciones</h2>
+        <div class="area-choices">
+          <button class="area-choice on">Salud</button>
+          <button class="area-choice">Cultura</button>
+          <button class="area-choice">Deportes</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Selección de servicios</h2>
+        <div class="pick">
+          <label class="pick-row on"><input type="checkbox" checked><span>Alquiler de salón</span><span class="price">Día</span><input type="number" value="1"></label>
+          <label class="pick-row"><input type="checkbox"><span>Estación de café</span><span class="price">Persona</span><input type="number" value="1" disabled></label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Panel</h2>
+        <details class="card" open><summary>Ítems</summary><p class="muted">Contenido del panel desplegable.</p></details>
+      </section>
+
+      <section>
+        <h2>Botón flotante</h2>
+        <a class="fab" href="#">+</a>
+      </section>
+
+      <section>
+        <h2>Navegación</h2>
+        <nav class="nav">
+      <a href="#/areas" data-nav="areas" class="active"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span>Áreas</span></a>
+      <a href="#/solicitar" data-nav="solicitar" class="nav-cta"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/></svg><span>Solicitar</span></a>
+      <a href="#/solicitudes" data-nav="solicitudes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r=".8"/><circle cx="4" cy="12" r=".8"/><circle cx="4" cy="18" r=".8"/></svg><span>Solicitudes</span><span class="count" id="navCount"></span></a>
+    </nav>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

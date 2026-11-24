@@ -446,6 +446,7 @@ function solList(list, { area: showArea = true } = {}) {
     const total = s.cotizacion ? money(calc(s.cotizacion).total, s.cotizacion.moneda) : "—";
     return `
       <a class="sol-row" href="#/solicitud/${s.id}">
+        <span class="chk ${s.estado === "aprobada" ? "on" : ""}"></span>
         <div class="sol-main">
           <strong>${esc(s.asunto)}</strong>
           <span>
@@ -1075,6 +1076,7 @@ function renderPreview(s, a) {
 }
 
 /* ---------- Inicio ---------- */
+
 
 checkLogin();
 route();
