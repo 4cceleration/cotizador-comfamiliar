@@ -281,11 +281,11 @@ function notFound() {
 function viewAreas() {
   app.innerHTML = `
     <div class="page">
-      <div class="page-head"><h1>Áreas</h1></div>
-      <div class="area-grid">
-        ${db.areas.map(areaCard).join("")}
-        <button class="area-card area-new" data-act="new-area"><span>+</span>Nueva área</button>
+      <div class="page-head">
+        <h1>¿Qué área necesitas?</h1>
+        <button class="ghost small" data-act="new-area">+ Área</button>
       </div>
+      <div class="area-grid">${db.areas.map(areaCard).join("")}</div>
     </div>`;
 }
 
@@ -294,16 +294,12 @@ function areaCard(a) {
   const pend = sols.filter((s) => s.estado === "pendiente").length;
   return `
     <article class="area-card">
-      <a class="area-link" href="#/area/${a.id}">
+      <a class="area-link" href="#/solicitar/${a.id}">
         <h2>${esc(a.nombre)}</h2>
         ${a.descripcion ? `<p class="area-desc">${esc(a.descripcion)}</p>` : ""}
-        <div class="area-stats">
-          <span title="Servicios">▦ ${a.catalogo.length}</span>
-          <span title="Solicitudes">✉ ${sols.length}</span>
-          ${pend ? `<span class="hot" title="Pendientes">● ${pend}</span>` : ""}
-        </div>
+        <span class="area-go">Solicitar →</span>
       </a>
-      <a class="btn primary area-cta" href="#/solicitar/${a.id}">Solicitar cotización</a>
+      <a class="area-sub" href="#/area/${a.id}">Bandeja${sols.length ? ` · ${sols.length}` : ""}${pend ? ` <b>${pend}</b>` : ""}</a>
     </article>`;
 }
 
@@ -706,15 +702,18 @@ function viewSolicitudes() {
           <option value="">Todas las áreas</option>
           ${db.areas.map((a) => `<option value="${a.id}">${esc(a.nombre)}</option>`).join("")}
         </select>
-        <select data-bind="tmp.f.estado">
-          <option value="">Todos los estados</option>
-          ${Object.entries(ESTADOS).map(([k, l]) => `<option value="${k}">${l}</option>`).join("")}
-        </select>
       </div>
+      <div class="chips chips-row" id="chipsEstado"></div>
       <div id="lista"></div>
     </div>`;
 
   function renderLista() {
+    const porArea = db.solicitudes.filter((s) => !filtros.area || s.areaId === filtros.area);
+    const opts = [["", "Todas", porArea.length], ...Object.entries(ESTADOS)
+      .map(([k, l]) => [k, l, porArea.filter((s) => s.estado === k).length]).filter(([, , n]) => n)];
+    if (!opts.some(([k]) => k === filtros.estado)) filtros.estado = "";
+    $("#chipsEstado").innerHTML = opts.map(([k, l, n]) =>
+      `<button class="chip ${filtros.estado === k ? "on" : ""}" data-act="chip-estado" data-f="${k}">${l} ${n}</button>`).join("");
     const q = filtros.q.trim().toLowerCase();
     const list = db.solicitudes
       .filter((s) => !filtros.area || s.areaId === filtros.area)
@@ -725,6 +724,7 @@ function viewSolicitudes() {
     $("#lista").innerHTML = solList(list);
   }
   view.onChange = renderLista;
+  view.actions = { "chip-estado": (b) => { filtros.estado = b.dataset.f; renderLista(); } };
   fillBinds();
   renderLista();
 }
@@ -758,14 +758,7 @@ function viewSolicitud(id) {
           <h1>${esc(s.asunto)}</h1>
           <p class="muted">${esc(s.numero)} · ${fmtDateTime(s.creada)}</p>
         </div>
-        <div class="head-actions">
-          <select class="estado-sel st-${s.estado}" id="estadoSel" aria-label="Estado">
-            ${Object.entries(ESTADOS).map(([k, l]) =>
-              `<option value="${k}" ${k === s.estado ? "selected" : ""}>${l}</option>`).join("")}
-          </select>
-          <button class="ghost danger-ghost" data-act="del-sol" title="Eliminar">🗑</button>
-          ${q ? `<button class="primary" data-act="print">PDF</button>` : ""}
-        </div>
+        <div class="head-actions">${badge(s.estado)}${accionesSolicitud(s, q)}</div>
       </div>
 
       <div class="layout">
@@ -775,11 +768,9 @@ function viewSolicitud(id) {
             <dl class="info">${info.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
             <ul class="timeline">${s.eventos.map((ev) =>
               `<li>${fmtDateTime(ev.fecha)} · ${ESTADOS[ev.estado] || ev.estado}</li>`).join("")}</ul>
+            <button class="link-danger" data-act="del-sol">Eliminar solicitud</button>
           </details>
-          ${q ? editorCards(a) : `
-            <div class="card cta">
-              <button class="primary big" data-act="crear-cot">Crear cotización</button>
-            </div>`}
+          ${q ? editorCards(a) : ""}
         </section>
 
         <section class="preview-wrap">
@@ -788,13 +779,6 @@ function viewSolicitud(id) {
         </section>
       </div>
     </div>`;
-
-  $("#estadoSel").addEventListener("change", (e) => {
-    setEstado(s, e.target.value);
-    saveDb();
-    viewSolicitud(id);
-    renderChrome();
-  });
 
   view.actions = {
     "crear-cot": () => {
@@ -811,17 +795,22 @@ function viewSolicitud(id) {
       location.hash = `#/area/${s.areaId}`;
     },
     print: () => {
-      if (s.estado === "en_proceso" || s.estado === "pendiente") {
-        setEstado(s, "cotizada");
-        saveDb();
-        $("#estadoSel").value = "cotizada";
-        $("#estadoSel").className = "estado-sel st-cotizada";
-        renderChrome();
-      }
       const prev = document.title;
       document.title = `${q.numero} - ${q.cliente.nombre || a.nombre}`;
       window.print();
       setTimeout(() => (document.title = prev), 500);
+      if (s.estado === "en_proceso" || s.estado === "pendiente") {
+        setEstado(s, "cotizada");
+        saveDb();
+        viewSolicitud(id);
+        renderChrome();
+      }
+    },
+    estado: (b) => {
+      setEstado(s, b.dataset.to);
+      saveDb();
+      viewSolicitud(id);
+      renderChrome();
     },
     "item-add": () => {
       q.items.push(nuevoItem());
@@ -917,6 +906,23 @@ function viewSolicitud(id) {
   fillBinds();
   renderItems();
   refresh();
+}
+
+// Una sola acción principal por estado (ley de Hick)
+function accionesSolicitud(s, q) {
+  if (!q) return `<button class="primary" data-act="crear-cot">Crear cotización</button>`;
+  switch (s.estado) {
+    case "cotizada":
+      return `<button data-act="print">PDF</button>
+        <button class="danger-ghost" data-act="estado" data-to="rechazada">Rechazada</button>
+        <button class="primary" data-act="estado" data-to="aprobada">Aprobada</button>`;
+    case "aprobada":
+      return `<button class="primary" data-act="print">PDF</button>`;
+    case "rechazada":
+      return `<button data-act="estado" data-to="en_proceso">Reabrir</button>`;
+    default:
+      return `<button class="primary" data-act="print">Generar PDF</button>`;
+  }
 }
 
 function editorCards(a) {

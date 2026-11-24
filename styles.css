@@ -415,6 +415,17 @@ button, .btn, input, select, textarea { border-radius: 10px; }
 .success .tick, .timeline li::before { border-radius: 50%; }
 .nav a { border-radius: 0; }
 
+/* ---------- Ley de Hick: una acción principal por tarjeta ---------- */
+.area-card { gap: 12px; }
+.area-go { margin-top: 14px; color: var(--brand); font-weight: 600; }
+.area-sub { align-self: flex-start; color: var(--muted); font-size: 12.5px; text-decoration: none; }
+.area-sub:hover { color: var(--brand); }
+.area-sub b { background: var(--danger); color: #fff; font-size: 10.5px; padding: 1px 6px; border-radius: 99px; }
+.chips-row { margin: -4px 0 14px; }
+.link-danger { height: auto; padding: 0; margin-top: 14px; border: none; background: none; color: var(--muted); font-size: 12.5px; }
+.link-danger:hover, .link-danger:active { background: none; color: var(--danger); }
+.head-actions .badge { margin-right: 4px; }
+
 /* ---------- Barra de navegación inferior (celular) ---------- */
 .nav svg { display: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .nav-cta { display: none !important; }
