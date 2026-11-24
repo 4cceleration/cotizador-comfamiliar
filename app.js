@@ -224,7 +224,26 @@ document.addEventListener("click", (e) => {
 
 const globalActions = {
   "new-area": () => openAreaDialog(),
+  salir: () => { localStorage.removeItem(SESION); checkLogin(); },
 };
+
+/* ---------- Ingreso ---------- */
+// Pantalla de entrada local (sin servidor): no valida credenciales.
+
+const SESION = "cotizador.sesion";
+function checkLogin() {
+  const ok = !!load(SESION, null);
+  document.body.classList.toggle("locked", !ok);
+  $("#login").hidden = ok;
+  if (!ok) $("#formLogin").reset();
+  return ok;
+}
+$("#formLogin").addEventListener("submit", (e) => {
+  e.preventDefault();
+  store(SESION, { email: e.target.email.value.trim(), t: Date.now() });
+  checkLogin();
+  route();
+});
 
 /* ---------- Router ---------- */
 
@@ -235,7 +254,7 @@ const views = {
   solicitudes: viewSolicitudes,
   solicitud: viewSolicitud,
 };
-const navOf = { area: "areas", solicitud: "solicitudes", solicitar: "" };
+const navOf = { area: "areas", solicitud: "solicitudes" };
 
 function route() {
   const [name = "areas", id] = location.hash.replace(/^#\/?/, "").split("/");
@@ -1052,4 +1071,5 @@ function renderPreview(s, a) {
 
 /* ---------- Inicio ---------- */
 
+checkLogin();
 route();

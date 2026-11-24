@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cotizaciones · Comfamiliar Risaralda</title>
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
   <header class="topbar">
@@ -15,11 +15,23 @@
       <span>Cotizaciones</span>
     </a>
     <nav class="nav">
-      <a href="#/areas" data-nav="areas">Áreas</a>
-      <a href="#/solicitudes" data-nav="solicitudes">Solicitudes <span class="count" id="navCount"></span></a>
+      <a href="#/areas" data-nav="areas"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span>Áreas</span></a>
+      <a href="#/solicitar" data-nav="solicitar" class="nav-cta"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/></svg><span>Solicitar</span></a>
+      <a href="#/solicitudes" data-nav="solicitudes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r=".8"/><circle cx="4" cy="12" r=".8"/><circle cx="4" cy="18" r=".8"/></svg><span>Solicitudes</span><span class="count" id="navCount"></span></a>
     </nav>
     <a class="btn primary" href="#/solicitar">Solicitar cotización</a>
+    <button type="button" class="ghost" data-act="salir">Salir</button>
   </header>
+
+  <section id="login" class="login" hidden>
+    <form id="formLogin" class="login-card">
+      <img src="assets/logo-comfamiliar.png" alt="Comfamiliar Risaralda" class="login-logo">
+      <h1>Ingresar</h1>
+      <label>Correo<input type="email" name="email" required autocomplete="username"></label>
+      <label>Contraseña<input type="password" name="pass" required autocomplete="current-password"></label>
+      <button class="primary">Ingresar</button>
+    </form>
+  </section>
 
   <main id="app"></main>
 
@@ -53,6 +65,6 @@
 
   <div id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=2"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
