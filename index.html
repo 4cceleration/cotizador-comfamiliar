@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cotizaciones · Comfamiliar Risaralda</title>
+  <link rel="icon" href="assets/logo-comfamiliar.png">
+  <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/areas">
+      <img src="assets/logo-comfamiliar.png" alt="Comfamiliar Risaralda">
+      <span class="brand-sep"></span>
+      <span>Cotizaciones</span>
+    </a>
+    <nav class="nav">
+      <a href="#/areas" data-nav="areas">Áreas</a>
+      <a href="#/solicitudes" data-nav="solicitudes">Solicitudes <span class="count" id="navCount"></span></a>
+    </nav>
+    <a class="btn primary" href="#/solicitar">Solicitar cotización</a>
+  </header>
+
+  <main id="app"></main>
+
+  <!-- Crear / editar área -->
+  <dialog id="dlgArea">
+    <form method="dialog" id="formArea">
+      <div class="dialog-head">
+        <h2 id="dlgAreaTitle">Nueva área</h2>
+        <button class="ghost" value="cancel" formnovalidate aria-label="Cerrar">✕</button>
+      </div>
+      <div class="grid">
+        <label class="span-2">Nombre del área *
+          <input name="nombre" required placeholder="Ej.: Marketing">
+        </label>
+        <label class="span-2">Descripción
+          <textarea name="descripcion" rows="2" placeholder="Qué servicios ofrece esta área"></textarea>
+        </label>
+        <label>Responsable
+          <input name="responsable" placeholder="Nombre de quien cotiza">
+        </label>
+        <label>Correo del área
+          <input name="email" type="email" placeholder="area@comfamiliar.com">
+        </label>
+      </div>
+      <div class="dialog-foot">
+        <button value="cancel" formnovalidate>Cancelar</button>
+        <button class="primary" value="ok">Guardar área</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js?v=2"></script>
+</body>
+</html>
